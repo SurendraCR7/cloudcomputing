@@ -1,0 +1,28 @@
+
+
+services:
+  backend:
+    build:
+      context: ./backend  # Path to the backend folder
+    ports:
+      - "3000:3000"  # Map port 3000 of the container to port 3000 on the host
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/fitnessTracker  # Connection string for MongoDB
+    depends_on:
+      - mongo  # Ensure mongo starts before backend
+          
+  frontend:
+    build:
+      context: ./frontend  # Path to the frontend folder
+    ports:
+      - "80:80"  # Map port 80 of the container to port 80 on the host
+
+  mongo:
+    image: mongo:latest  # Use the official MongoDB image
+    ports:
+      - "27017:27017"  # Map port 27017 of the container to port 27017 on the host
+    volumes:
+      - mongo_data:/data/db  # Use a named volume for MongoDB data persistence
+
+volumes:
+  mongo_data:
